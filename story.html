@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Story</title>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    img {
+      margin: 10px;
+      border-radius: 10px;
+    }
+    p {
+      font-size: 16px;
+      max-width: 600px;
+      margin: auto;
+    }
+    .story-box {
+      background: white;
+      padding: 15px;
+      margin: 10px auto;
+      border-radius: 10px;
+      width: 80%;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      background-color: red;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Story</h1>
+  <div id="story-content"></div>
+  
+  <h2>All Stories</h2>
+  <button onclick="loadStories()">Load More Stories</button>
+  <div id="all-stories"></div>
+
+  <script>
+    // 🔥 Firebase Configuration (Replace with your own)
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Show the user's just submitted story
+    const selectedElements = JSON.parse(localStorage.getItem("selectedElements"));
+    const userStory = localStorage.getItem("userStory");
+
+    if (selectedElements && userStory) {
+      document.getElementById("story-content").innerHTML = `
+        <h2>Your Selected Elements:</h2>
+        ${selectedElements.map(el => `
+          <div style="margin-bottom:20px;">
+            <img src="${el.img}" width="150">
+            <p><strong>${el.name}</strong>: ${el.hiddenInfo}</p>
+          </div>
+        `).join("")}
+        <h2>Your Created Story:</h2>
+        <p>${userStory}</p>
+      `;
+    }
+
+    // Load all submitted stories from Firestore
+    function loadStories() {
+      let container = document.getElementById("all-stories");
+      container.innerHTML = "<h2>All Submitted Stories</h2>";
+
+      db.collection("stories").orderBy("timestamp", "desc").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          let div = document.createElement("div");
+          div.classList.add("story-box");
+          div.innerHTML = `
+            <p><strong>Anonymous Story:</strong></p>
+            <p>${data.text}</p>
+          `;
+          container.appendChild(div);
+        });
+      });
+    }
+
+    // Auto-load stories when the page opens
+    loadStories();
+  </script>
+</body>
+</html>
+

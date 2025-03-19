@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tinkering Interactive Experiment</title>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+
+  <script>
+    // 🔥 Replace with your Firebase config
+    const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "YOUR_PROJECT.firebaseapp.com",
+        projectId: "YOUR_PROJECT_ID",
+        storageBucket: "YOUR_PROJECT.appspot.com",
+        messagingSenderId: "YOUR_SENDER_ID",
+        appId: "YOUR_APP_ID"
+    };
+
+    // 🔥 Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .image-box {
+      margin: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 3px solid transparent;
+      border-radius: 10px;
+    }
+    .image-box img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .selected {
+      border-color: red;
+      box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7);
+    }
+    #next-btn, #submit-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      background-color: red;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #story-container {
+      display: none;
+      margin-top: 20px;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Select the elements you like and create your own story</h1>
+  
+  <div class="container" id="image-container">
+    <!-- Images will be added via JavaScript -->
+  </div>
+
+  <button id="next-btn">Next</button>
+
+  <div id="story-container">
+    <h2>Your selected elements:</h2>
+    <div class="container" id="selected-images"></div>
+    <h3>Now, use your imagination and write your story:</h3>
+    <textarea id="user-story" placeholder="Write your story here..."></textarea>
+    <br>
+    <button id="submit-btn">Submit Story</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
