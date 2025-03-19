@@ -2,7 +2,7 @@
 let elements = [
     { name: "A Mysterious Presence", img: "img/a mysterious presence.png", hiddenInfo: "This is a mysterious presence. Its body seems to be made of the galaxy, yet it has a strangely realistic hairstyle. It is believed to be a great being in the universe, from which strange creatures are born." },
     { name: "A Magical Horn", img: "img/a magical horn.png", hiddenInfo: "This is a horn that can transmit messages across the entire universe. It is said to have originally belonged to the elves, but somehow it drifted into space." },
-    { name: "The Homeland of the Elves", img: "img/The homeland of the elves.png", hiddenInfo: "A distant land where the most united species, the elves, reside. Though they appear simple, their bond is unbreakable." },
+    { name: "The Homeland of the Elves", img: "img/the homeland of the elves.png", hiddenInfo: "A distant land where the most united species, the elves, reside. Though they appear simple, their bond is unbreakable." },
     { name: "A Strange Creature", img: "img/a strange creature.png", hiddenInfo: "This is a peculiar creature, possibly connected to that great being? It possesses immense power, moves at incredible speed, and can ignite flames from parts of its body." },
     { name: "A Crescent Moon with Wings", img: "img/a crescent moon with wings.png", hiddenInfo: "Once shattered by a meteorite, parts of it underwent a magical transformation, sprouting wings and tendrils." },
     { name: "A Perfectly Ordinary Backpack", img: "img/a perfectly ordinary backpack.png", hiddenInfo: "Just a normal backpack... or maybe it's connected to something else?" },
