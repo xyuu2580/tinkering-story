@@ -1,107 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Story</title>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
-  <style>
-    body {
-      text-align: center;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      padding: 20px;
-    }
-    img {
-      margin: 10px;
-      border-radius: 10px;
-    }
-    p {
-      font-size: 16px;
-      max-width: 600px;
-      margin: auto;
-    }
-    .story-box {
-      background: white;
-      padding: 15px;
-      margin: 10px auto;
-      border-radius: 10px;
-      width: 80%;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-    button {
-      margin-top: 10px;
-      padding: 10px 15px;
-      font-size: 16px;
-      border: none;
-      background-color: red;
-      color: white;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Story</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-  <h1>Your Story</h1>
-  <div id="story-content"></div>
-  
-  <h2>All Stories</h2>
-  <button onclick="loadStories()">Load More Stories</button>
-  <div id="all-stories"></div>
-
-  <script>
-    // 🔥 Firebase Configuration (Replace with your own)
-    const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.appspot.com",
-        messagingSenderId: "YOUR_SENDER_ID",
-        appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Show the user's just submitted story
-    const selectedElements = JSON.parse(localStorage.getItem("selectedElements"));
-    const userStory = localStorage.getItem("userStory");
-
-    if (selectedElements && userStory) {
-      document.getElementById("story-content").innerHTML = `
-        <h2>Your Selected Elements:</h2>
-        ${selectedElements.map(el => `
-          <div style="margin-bottom:20px;">
-            <img src="${el.img}" width="150">
-            <p><strong>${el.name}</strong>: ${el.hiddenInfo}</p>
-          </div>
-        `).join("")}
+    <div class="container">
+        <h1>Your Story</h1>
+        <h2>You Selected:</h2>
+        <div id="selected-images"></div>
         <h2>Your Created Story:</h2>
-        <p>${userStory}</p>
-      `;
-    }
+        <p id="user-story"></p>
+    </div>
 
-    // Load all submitted stories from Firestore
-    function loadStories() {
-      let container = document.getElementById("all-stories");
-      container.innerHTML = "<h2>All Submitted Stories</h2>";
+    <script>
+        // 获取用户提交的故事和选择的图片
+        const selectedElements = JSON.parse(localStorage.getItem("selectedElements"));
+        const userStory = localStorage.getItem("userStory");
 
-      db.collection("stories").orderBy("timestamp", "desc").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          let div = document.createElement("div");
-          div.classList.add("story-box");
-          div.innerHTML = `
-            <p><strong>Anonymous Story:</strong></p>
-            <p>${data.text}</p>
-          `;
-          container.appendChild(div);
-        });
-      });
-    }
+        // 获取 HTML 元素
+        const selectedImagesDiv = document.getElementById("selected-images");
+        const userStoryText = document.getElementById("user-story");
 
-    // Auto-load stories when the page opens
-    loadStories();
-  </script>
+        // 如果用户有选择的元素，则展示它们
+        if (selectedElements && selectedElements.length > 0) {
+            selectedElements.forEach(el => {
+                let imgContainer = document.createElement("div");
+                let img = document.createElement("img");
+                img.src = el.img;
+                let info = document.createElement("p");
+                info.innerHTML = `<b>${el.name}</b>: ${el.hiddenInfo}`;
+                
+                imgContainer.appendChild(img);
+                imgContainer.appendChild(info);
+                selectedImagesDiv.appendChild(imgContainer);
+            });
+        } else {
+            selectedImagesDiv.innerHTML = "<p>No selections made.</p>";
+        }
+
+        // 显示用户的故事
+        userStoryText.innerText = userStory ? userStory : "No story written.";
+    </script>
 </body>
 </html>
-
